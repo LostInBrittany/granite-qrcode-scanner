@@ -1,0 +1,244 @@
+<!--
+@license MIT
+Copyright (c) 2016 Horacio "LostInBrittany" Gonzalez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<granite-qrcode-scanner>` is an element to render a QR Code
+
+Typical usage:
+
+```html
+  <granite-qrcode-scanner></granite-qrcode-scanner>
+```
+
+@element granite-qrcode-scanner
+@blurb An element to scan a QR Code
+@homepage index.html
+@demo demo/index.html
+-->
+
+
+<script src="../jsqrcode/dist/jsqrcode.js"></script>
+
+<dom-module is="granite-qrcode-scanner">
+
+    <template>
+      <style>
+        :host {
+          display: block;
+        }
+        [hide] {
+          display: none;
+        }
+        .media {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+        }
+      </style>
+      <div class="media">
+        <video id="qrVideo" autoplay width="[[width]]" height="[[height]]"></video>
+        <canvas id="qrCanvas" width="[[_canvasWidth]]" height="[[_canvasHeight]]" hide$="[[_hidden]]"></canvas>
+      </div>
+    </template>
+
+
+    <script>
+      Polymer({
+        is: "granite-qrcode-scanner",
+
+        properties: {
+          /**
+           * The data to encode in the QRCode
+           */
+          data: {
+            type: String,
+          },
+          /**
+           * The width of the scanning window
+           */
+          width: {
+            type: Number,
+            value: 320
+          },
+          /**
+           * The height of the scanning window
+           */
+          height: {
+            type: Number,
+            value: 240
+          },
+          /**
+           * If true, the canvas is hidden
+           */
+          _hidden: {
+            type: Boolean,
+            value: true
+          },
+          /**
+           * The canvas 2d context
+           */
+          _context: {
+            type: Object,
+          },
+          _browser: {
+            type: String,
+            value: ""
+          },
+          _refresh: {
+            type: Number,
+            value: 100,
+          },
+          _canvasWidth: {
+            type: Number,
+            computed: "_getCanvasWidth(width)"
+          },
+          _canvasHeight: {
+            type: Number,
+            computed: "_getCanvasHeight(height)"
+          },
+        },
+
+        observers: [],
+
+        // *********************************************************************
+        // Livecycle
+        // *********************************************************************
+        attached: function() {
+          this._context = this.$.qrCanvas.getContext("2d");
+
+          this._context.clearRect(0, 0, this.width, this.height);
+
+          //called when qrcode is found
+          qrcode.callback = function(res) {
+            console.debug("[granite-qrcode-scanner] qrcode.callback", res);
+          };
+
+          this._initWebcam();
+
+        },
+
+
+
+        // *********************************************************************
+        // Computer properties
+        // *********************************************************************
+        _getCanvasWidth() {
+            // The biggest the canvas, ther best the detection
+            return 3*this.width;
+        },
+        _getCanvasHeight() {
+            // The biggest the canvas, ther best the detection
+            return 3*this.height;
+        },
+
+        // *********************************************************************
+        // Observers
+
+
+        // *********************************************************************
+        // Event listeners
+        // *********************************************************************
+
+
+
+
+        // *********************************************************************
+        // Other methods
+        // *********************************************************************
+        _initWebcam: function() {
+          var options = true;
+          var elem = this;
+        	if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) 	{
+        		try{
+        			navigator.mediaDevices.enumerateDevices()
+        			.then(function(devices) {
+        			  devices.forEach(function(device) {
+          				if (device.kind === 'videoinput') {
+                    console.debug("[granite-qrcode-scanner] _initWebcam - device found", device.kind + ": " + device.label +" id = " + device.deviceId);
+          				  if(device.label.toLowerCase().search("back") >-1 /* || device.label.toLowerCase().search("rear") >-1 */) {
+          					  options={'deviceId': {'exact':device.deviceId}, 'facingMode': 'environment'} ;
+                    }
+          				}
+          				console.debug("[granite-qrcode-scanner] _initWebcam", device.kind + ": " + device.label +" id = " + device.deviceId, "options", options);
+        			  });
+        			  elem._initWebcam2(options);
+        			});
+        		}
+        		catch(e)
+        		{
+        			console.log("[granite-qrcode-scanner] _initWebcam - error", e);
+        		}
+        	}
+        	else{
+        		console.debug("[granite-qrcode-scanner] _initWebcam - no navigator.mediaDevices.enumerateDevices" );
+        		elem._initWebcam2(options);
+        	}
+        },
+
+        _initWebcam2: function(options) {
+
+          	console.debug("granite-qrcode-scanner] _initWebcam2",options);
+            if(this._stype==1) {
+                this.async(this._captureVideo, this._refresh);
+                return;
+            }
+
+            var elem = this;
+            var moz, webkit
+      			//webcam activation
+      			if (navigator.getUserMedia) {
+      				navigator.getUserMedia({
+                  video: options, audio: false,
+                }, _onCameraSuccess, _onCameraError);
+      			} else if (navigator.webkitGetUserMedia) {
+      				this._browser = "webkit";
+      				navigator.webkitGetUserMedia({video: options, audio: false}, _onCameraSuccess, _onCameraError);
+      			} else if(n.mozGetUserMedia) {
+      				this._browser = "moz";
+      				navigator.mozGetUserMedia({video: options, audio: false}, _onCameraSuccess, _onCameraError);
+      			}
+
+            function _onCameraSuccess(stream) {
+      				if(elem._browser == "webkit") {
+      					elem.$.qrVideo.src = window.webkitURL.createObjectURL(stream);
+      				} else if(elem._browser == "moz") {
+      					elem.$.qrVideo.mozSrcObject = stream;
+      					elem.$.qrVideo.play();
+      				} else {
+      					elem.$.qrVideo.srcObject = stream;
+      				}
+      				elem._captureVideo();
+      			}
+            function _onCameraError(e) {
+      				console.log("[granite-qrcode-scanner] _onCameraError", e);
+      				alert("Can't access to webcam");
+      			}
+
+            this._stype=1;
+            this.async(this._captureVideo, this._refresh);
+        },
+
+        _captureVideo: function(){
+  				try {
+						this._context.drawImage(this.$.qrVideo, 0, 0);
+						qrcode.decode("",this.$.qrCanvas);
+            console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
+  				} catch (e) {
+            // console.debug("[granite-qrcode-scanner] _captureVideo - error", e);
+  				} finally {
+  					this.async(this._captureVideo, this._refresh);
+  				}
+  			}
+      });
+    </script>
+
+</dom-module>
