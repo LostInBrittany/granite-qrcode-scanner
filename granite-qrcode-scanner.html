@@ -206,7 +206,12 @@ Typical usage:
       			} else if (navigator.webkitGetUserMedia) {
       				this._browser = "webkit";
       				navigator.webkitGetUserMedia({video: options, audio: false}, _onCameraSuccess, _onCameraError);
-      			} else if(n.mozGetUserMedia) {
+      			} else if(navigator.mediaDevices.getUserMedia) {
+      				this._browser = "moz";
+      				navigator.mediaDevices.
+                  getUserMedia({video: options, audio: false}).
+                  then(_onCameraSuccess).catch(_onCameraError);
+      			} else if(navigator.mozGetUserMedia) {
       				this._browser = "moz";
       				navigator.mozGetUserMedia({video: options, audio: false}, _onCameraSuccess, _onCameraError);
       			}

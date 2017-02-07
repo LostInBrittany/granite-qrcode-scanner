@@ -22,23 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       // setup Polymer options
       window.Polymer = {lazyRegister: true, dom: 'shadow'};
-
-      // load webcomponents polyfills
-      (function() {
-        if ('registerElement' in document
-            && 'import' in document.createElement('link')
-            && 'content' in document.createElement('template')) {
-          // browser has web components
-        } else {
-          // polyfill web components
-          var e = document.createElement('script');
-          e.src = '../../webcomponentsjs/webcomponents-lite.min.js';
-          document.head.appendChild(e);
-        }
-      })();
-
-
     </script>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link   rel="import" href="../../polymer/polymer.html">
 
 
@@ -82,14 +67,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           Scanned QR code: [[data]]
     		</template>
     		<script>
+          window.addEventListener('WebComponentsReady', function() {
             Polymer({
               is: "full-demo",
               properties: {
               },
             });
-          </script>
+          });
+        </script>
     	</dom-module>
-
 
       <demo-snippet class="centered-demo">
         <template>
