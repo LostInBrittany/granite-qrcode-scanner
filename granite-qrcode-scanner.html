@@ -61,6 +61,8 @@ Typical usage:
            */
           data: {
             type: String,
+            notify: true,
+            value: "",
           },
           /**
            * The width of the scanning window
@@ -117,9 +119,11 @@ Typical usage:
 
           this._context.clearRect(0, 0, this.width, this.height);
 
+          var elem = this;
           //called when qrcode is found
           qrcode.callback = function(res) {
-            console.debug("[granite-qrcode-scanner] qrcode.callback", res);
+            elem.data = res;
+            console.debug("[granite-qrcode-scanner] qrcode.callback", elem.data, elem);
           };
 
           this._initWebcam();
@@ -231,7 +235,7 @@ Typical usage:
   				try {
 						this._context.drawImage(this.$.qrVideo, 0, 0);
 						qrcode.decode("",this.$.qrCanvas);
-            console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
+            // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
   				} catch (e) {
             // console.debug("[granite-qrcode-scanner] _captureVideo - error", e);
   				} finally {

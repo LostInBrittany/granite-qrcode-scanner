@@ -61,23 +61,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         background-color: #4285f4;
         color: white;
       }
-      demo-snippet.vertical-centered-demo {
-       --demo-snippet-demo: {
-         @apply(--layout-vertical);
-         @apply(--layout-wrap);
-         @apply(--layout-center-justified);
-       }
-     }
     </style>
   </head>
 
   <body unresolved>
     <div class="vertical-section-container centered">
 
-      <h3>Basic usage</h3>
-      <demo-snippet class="vertical-centered-demo">
+      <h3>Full demo</h3>
+
+      <dom-module is="full-demo">
+    		<template>
+    			<style>
+    				:host {
+    					display: block;
+    					width: 100%;
+    				}
+    			</style>
+          <granite-qrcode-scanner data="{{data}}"></granite-qrcode-scanner>
+
+          Scanned QR code: [[data]]
+    		</template>
+    		<script>
+            Polymer({
+              is: "full-demo",
+              properties: {
+              },
+            });
+          </script>
+    	</dom-module>
+
+
+      <demo-snippet class="centered-demo">
         <template>
-          <granite-qrcode-scanner></granite-qrcode-scanner>
+          <full-demo></full-demo>
         </template>
       </demo-snippet>
     </div>
