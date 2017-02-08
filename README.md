@@ -28,7 +28,7 @@
 ```
 -->
 ```html
-<granite-qrcode-scanner></granite-qrcode-scanner>
+<granite-qrcode-scanner active></granite-qrcode-scanner>
 ```
 
 ## Install

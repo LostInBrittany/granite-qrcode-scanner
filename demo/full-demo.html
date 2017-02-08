@@ -31,6 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-icons/iron-icons.html">
+    <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
 
     <link rel="import" href="../../granite-qrcode-scanner/granite-qrcode-scanner.html">
 
@@ -58,13 +59,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     		<template>
     			<style>
     				:host {
-    					display: block;
+    					display: flex;
+              flex-flow: column nowrap;
+              align-items: center;
     					width: 100%;
     				}
+            div {
+              margin: 16px 0;
+            }
+            .layout.horizontal {
+              display: flex;
+              flex-flow: row nowrap;;
+            }
+            paper-toggle-button {
+              margin: 0 16px ;
+            }
     			</style>
-          <granite-qrcode-scanner data="{{data}}"></granite-qrcode-scanner>
+          <granite-qrcode-scanner data="{{data}}" active="[[active]]"></granite-qrcode-scanner>
 
-          Scanned QR code: [[data]]
+          <div>
+            Scanned QR code: [[data]]
+          </div>
+
+          <div>Scanner status</div>
+          <div class="layout horizontal"> Off <paper-toggle-button active="{{active}}"></paper-toggle-button>On</div>
     		</template>
     		<script>
           window.addEventListener('WebComponentsReady', function() {

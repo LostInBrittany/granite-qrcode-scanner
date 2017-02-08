@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 Typical usage:
 
 ```html
-  <granite-qrcode-scanner></granite-qrcode-scanner>
+  <granite-qrcode-scanner active="[[active]]"></granite-qrcode-scanner>
 ```
 
 @element granite-qrcode-scanner
@@ -56,6 +56,14 @@ Typical usage:
         is: "granite-qrcode-scanner",
 
         properties: {
+          /**
+            * If true the elements scans for QR code
+            */
+          active: {
+            type: Boolean,
+            value: false
+          },
+
           /**
            * The data to encode in the QRCode
            */
@@ -238,9 +246,11 @@ Typical usage:
 
         _captureVideo: function(){
   				try {
-						this._context.drawImage(this.$.qrVideo, 0, 0);
-						qrcode.decode("",this.$.qrCanvas);
-            // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
+            if (this.active) {
+  						this._context.drawImage(this.$.qrVideo, 0, 0);
+  						qrcode.decode("",this.$.qrCanvas);
+              // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
+            }
   				} catch (e) {
             // console.debug("[granite-qrcode-scanner] _captureVideo - error", e);
   				} finally {
