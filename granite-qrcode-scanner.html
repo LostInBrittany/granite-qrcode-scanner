@@ -67,6 +67,13 @@ Typical usage:
       Polymer({
         is: "granite-qrcode-scanner",
 
+
+        /**
+         * Fired when a QR Code is generated.
+         *
+         * @event qrcode-decoded
+         */
+
         properties: {
           /**
             * If true the elements scans for QR code
@@ -77,7 +84,7 @@ Typical usage:
           },
 
           /**
-           * The data to encode in the QRCode
+           * The last decoded QRCode
            */
           data: {
             type: String,
@@ -144,6 +151,7 @@ Typical usage:
           qrcode.callback = function(res) {
             elem.data = res;
             console.debug("[granite-qrcode-scanner] qrcode.callback", elem.data, elem);
+            elem.fire("qrcode-decoded", res);
           };
 
 
