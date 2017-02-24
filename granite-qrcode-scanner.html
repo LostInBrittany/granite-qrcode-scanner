@@ -48,6 +48,17 @@ Typical usage:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
       .media {
         display: flex;
         flex-flow: column nowrap;
@@ -93,7 +104,8 @@ Typical usage:
              */
             active: {
               type: Boolean,
-              value: false
+              value: false,
+              observer: '_updateActive'
             },
 
             /**
@@ -132,9 +144,12 @@ Typical usage:
         this._context = null;
         this._browser = "";
         this._refresh = 100;
-        this._canvasWidth = this._getCanvasWidth(320); // TODO
-        this._canvasHeight = this._getCanvasHeight(240); //TODO
+        this._canvasWidth = this._getCanvasWidth(320);
+        this._canvasHeight = this._getCanvasHeight(240);
         this._supportsWebRtc = false;
+        this._options = {};
+        this._stype = 0; // 1 if the stream is recording
+        this._stream = null;
       }
 
       connectedCallback() {
@@ -183,6 +198,15 @@ Typical usage:
       // Event listeners
       // *********************************************************************
 
+      _updateActive(active) {
+        if (!this.active && this._stype === 1) {
+          this.$.qrVideo.srcObject = null;
+          if (this._stream) {
+            this._stream.getTracks().forEach(track => track.stop());
+          }
+          this._stype = 0;
+        }
+      }
 
       _onFileRead(evt, data) {
         console.debug("[granite-qrcode-scanner] _onFileRead - Image read", data);
@@ -239,20 +263,40 @@ Typical usage:
                   console.debug("[granite-qrcode-scanner] _initWebcam", device.kind + ": " + device.label +
                     " id = " + device.deviceId, "options", options);
                 });
-                elem._initWebcam2(options);
+                elem._options = options;
+                elem._initWebcam2();
               });
           } catch (e) {
             console.log("[granite-qrcode-scanner] _initWebcam - error", e);
           }
         } else {
           console.debug("[granite-qrcode-scanner] _initWebcam - no navigator.mediaDevices.enumerateDevices");
-          elem._initWebcam2(options);
+          elem._options = options;
+          elem._initWebcam2();
         }
       }
 
-      _initWebcam2(options) {
+      _onCameraSuccess(stream) {
+        this._stream = stream;
+        if (this._browser == "webkit") {
+          this.$.qrVideo.src = window.webkitURL.createObjectURL(stream);
+        } else if (this._browser == "moz") {
+          this.$.qrVideo.mozSrcObject = stream;
+          this.$.qrVideo.play();
+        } else {
+          this.$.qrVideo.srcObject = stream;
+        }
+        this._captureVideo();
+      }
 
-        console.debug("granite-qrcode-scanner] _initWebcam2", options);
+      _onCameraError(e) {
+        console.log("[granite-qrcode-scanner] _onCameraError", e);
+        alert("Can't access to webcam");
+      }
+
+      _initWebcam2() {
+
+        console.debug("granite-qrcode-scanner] _initWebcam2", this._options);
         if (this._stype == 1) {
           //this.async(this._captureVideo, this._refresh);
           setTimeout(this._captureVideo.bind(this), this._refresh);
@@ -261,62 +305,54 @@ Typical usage:
 
         var elem = this;
         var moz, webkit
+
         //webcam activation
-        if (navigator.getUserMedia) {
-          navigator.getUserMedia({
-            video: options,
-            audio: false,
-          }, _onCameraSuccess, _onCameraError);
-        } else if (navigator.webkitGetUserMedia) {
-          this._browser = "webkit";
-          navigator.webkitGetUserMedia({
-            video: options,
-            audio: false
-          }, _onCameraSuccess, _onCameraError);
-        } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-          this._browser = "moz";
-          navigator.mediaDevices.
-          getUserMedia({
-            video: options,
-            audio: false
-          }).
-          then(_onCameraSuccess).catch(_onCameraError);
-        } else if (navigator.mozGetUserMedia) {
-          this._browser = "moz";
-          navigator.mozGetUserMedia({
-            video: options,
-            audio: false
-          }, _onCameraSuccess, _onCameraError);
-        }
-
-        function _onCameraSuccess(stream) {
-          if (elem._browser == "webkit") {
-            elem.$.qrVideo.src = window.webkitURL.createObjectURL(stream);
-          } else if (elem._browser == "moz") {
-            elem.$.qrVideo.mozSrcObject = stream;
-            elem.$.qrVideo.play();
-          } else {
-            elem.$.qrVideo.srcObject = stream;
+        if (this.active) {
+          this._stype = 1;
+          if (navigator.getUserMedia) {
+            navigator.getUserMedia({
+              video: this._options,
+              audio: false,
+            }, this._onCameraSuccess.bind(this), this._onCameraError.bind(this));
+          } else if (navigator.webkitGetUserMedia) {
+            this._browser = "webkit";
+            navigator.webkitGetUserMedia({
+              video: this._options,
+              audio: false
+            }, this._onCameraSuccess.bind(this), this._onCameraError.bind(this));
+          } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            this._browser = "moz";
+            navigator.mediaDevices.
+            getUserMedia({
+              video: this._options,
+              audio: false
+            }).
+            then(this._onCameraSuccess.bind(this)).catch(this._onCameraError.bind(this));
+          } else if (navigator.mozGetUserMedia) {
+            this._browser = "moz";
+            navigator.mozGetUserMedia({
+              video: this._options,
+              audio: false
+            }, this._onCameraSuccess.bind(this), this._onCameraError.bind(this));
           }
-          elem._captureVideo();
+
         }
 
-        function _onCameraError(e) {
-          console.log("[granite-qrcode-scanner] _onCameraError", e);
-          alert("Can't access to webcam");
-        }
-
-        this._stype = 1;
         //this.async(this._captureVideo, this._refresh);
         setTimeout(this._captureVideo.bind(this), this._refresh);
       }
 
       _captureVideo() {
         try {
+
           if (this.active) {
-            this._context.drawImage(this.$.qrVideo, 0, 0);
-            qrcode.decode("", this.$.qrCanvas);
-            // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
+            if (this._stype === 0) {
+              this._initWebcam2();
+            } else {
+              this._context.drawImage(this.$.qrVideo, 0, 0);
+              qrcode.decode("", this.$.qrCanvas);
+              // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
+            }
           }
         } catch (e) {
           // console.debug("[granite-qrcode-scanner] _captureVideo - error", e);
