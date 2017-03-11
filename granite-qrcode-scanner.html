@@ -214,10 +214,6 @@ Typical usage:
                 return true;
           }
           console.debug("[granite-qrcode-scanner] _doesSupportWebRtc - false");
-
-          // Load page import on demand. Show 404 page if fails
-          var resolvedPageUrl = this.resolveUrl('../granite-file-reader/granite-file-reader.html');
-          this.importHref(resolvedPageUrl, null, null, true);
           return false;
         },
 
