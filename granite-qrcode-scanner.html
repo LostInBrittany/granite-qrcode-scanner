@@ -48,8 +48,8 @@ Typical usage:
         }
       </style>
       <div class="media">
-          <video id="qrVideo" autoplay width="[[width]]" height="[[height]]" hide$="[[!_supportsWebRtc]]"></video>
-        <template is="dom-if" if="[[!_supportsWebRtc]]">
+          <video id="qrVideo" autoplay width="[[width]]" height="[[height]]" hide$="[[!webRtc]]"></video>
+        <template is="dom-if" if="[[!webRtc]]">
           <granite-file-reader   
               read-as="dataURL"  
               accept=".jpg" 
@@ -70,6 +70,13 @@ Typical usage:
       Polymer({
         is: "granite-qrcode-scanner",
 
+
+        /**
+         * Fired when the elements knows if webRTC is supported.
+         *
+         * @event web-rtc-support
+         * @param {boolean} WebRTC support status
+         */
 
         /**
          * Fired when a QR Code is generated.
@@ -130,8 +137,9 @@ Typical usage:
             type: Number,
             computed: "_getCanvasHeight(height)"
           },
-          _supportsWebRtc: {
+          webRtc: {
             type: Boolean,
+            notify: true,
             value: false
           }
         },
@@ -143,7 +151,7 @@ Typical usage:
         // *********************************************************************
         attached: function() {
 
-          this._supportsWebRtc = this._doesSupportWebRtc();
+          this.webRtc = this._doesSupportWebRtc();
 
           this._context = this.$.qrCanvas.getContext("2d");
 
@@ -158,7 +166,7 @@ Typical usage:
           };
 
 
-          if (this._supportsWebRtc) {
+          if (this.webRtc) {
             this._initWebcam();
           }
           
@@ -211,9 +219,11 @@ Typical usage:
               navigator.webkitGetUserMedia || 
               navigator.mozGetUserMedia) {
                 console.debug("[granite-qrcode-scanner] _doesSupportWebRtc - true");
+                this.fire("web-rtc-support", true);
                 return true;
           }
           console.debug("[granite-qrcode-scanner] _doesSupportWebRtc - false");
+          this.fire("web-rtc-support", false);
           return false;
         },
 
