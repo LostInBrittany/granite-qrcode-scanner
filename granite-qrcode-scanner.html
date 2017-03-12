@@ -39,16 +39,34 @@ Typical usage:
           display: block;
         }
         [hide] {
-          display: none;
+          display: none !important;
         }
         .media {
             display: flex;
             flex-flow: column nowrap;
             align-items: center;
         }
+        .placeholder {
+          width: var(--placeholder-width, 320px);
+          height: var(--placeholder-height, 240px);
+          border-radius: 10px;
+          background-color:var(--placeholder-background-color, #ffc107);
+          color: var(--placeholder-color, white);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 24px;
+          font-weight: bold;
+        }
       </style>
       <div class="media">
-          <video id="qrVideo" autoplay width="[[width]]" height="[[height]]" hide$="[[!webRtc]]"></video>
+
+        <template is="dom-if" if="[[webRtc]]">
+          <video id="qrVideo" autoplay width="[[width]]" height="[[height]]" hide$="[[!active]]" on-click="_desactivate"></video>
+          <div hide$="[[active]]" class="placeholder"  on-click="_activate">
+            [[placeholderMessage]]
+          </div>
+        </template>
         <template is="dom-if" if="[[!webRtc]]">
           <granite-file-reader   
               read-as="dataURL"  
@@ -90,7 +108,8 @@ Typical usage:
             */
           active: {
             type: Boolean,
-            value: false
+            value: false,
+            notify: true,
           },
 
           /**
@@ -116,6 +135,13 @@ Typical usage:
             value: 240
           },
           /**
+           * The message to show when scanner isn't activated
+           */
+          placeholderMessage: {
+            type: String,
+            value: "Tap here to activate scanner",
+          } ,
+          /**
            * The canvas 2d context
            */
           _context: {
@@ -124,6 +150,9 @@ Typical usage:
           _browser: {
             type: String,
             value: ""
+          },
+          _stream: {
+            type: Object,
           },
           _refresh: {
             type: Number,
@@ -137,6 +166,10 @@ Typical usage:
             type: Number,
             computed: "_getCanvasHeight(height)"
           },
+          _isAttached: {
+            type: Boolean,
+            value: false
+          },
           webRtc: {
             type: Boolean,
             notify: true,
@@ -144,7 +177,9 @@ Typical usage:
           }
         },
 
-        observers: [],
+        observers: [
+          "_onScannerActiveChange(active, webRtc,_isAttached)"
+        ],
 
         // *********************************************************************
         // Livecycle
@@ -152,6 +187,12 @@ Typical usage:
         attached: function() {
 
           this.webRtc = this._doesSupportWebRtc();
+
+          this.customStyle['--placeholder-width'] = this.width+'px';
+          this.customStyle['--placeholder-height'] = this.height+'px';
+          this.updateStyles();
+
+          this._isAttached = true;
 
           this._context = this.$.qrCanvas.getContext("2d");
 
@@ -166,9 +207,7 @@ Typical usage:
           };
 
 
-          if (this.webRtc) {
-            this._initWebcam();
-          }
+
           
 
         },
@@ -189,7 +228,18 @@ Typical usage:
 
         // *********************************************************************
         // Observers
-
+        // *********************************************************************
+        _onScannerActiveChange: function() {
+          if (!this._isAttached || !this.webRtc) {
+            return;
+          }
+          if (!this.active) {
+            this._closeMediaStream();
+          } else {   
+            this._openMediaStream();          
+          }
+        },
+        
 
         // *********************************************************************
         // Event listeners
@@ -208,6 +258,13 @@ Typical usage:
   				}            
 
 
+        },
+
+        _activate: function() {
+          this.set("active",true);
+        },
+        _desactivate: function() {
+          this.set("active",false);
         },
 
         // *********************************************************************
@@ -258,7 +315,6 @@ Typical usage:
         },
 
         _initWebcam2: function(options) {
-
           	console.debug("granite-qrcode-scanner] _initWebcam2",options);
             if(this._stype==1) {
                 this.async(this._captureVideo, this._refresh);
@@ -286,13 +342,15 @@ Typical usage:
       			}
 
             function _onCameraSuccess(stream) {
+              console.debug("[granite-qrcode-scanner] _onCameraSuccess", stream);
+              elem._stream = stream;
       				if(elem._browser == "webkit") {
-      					elem.$.qrVideo.src = window.webkitURL.createObjectURL(stream);
+      					elem.$$("#qrVideo").src = window.webkitURL.createObjectURL(stream);
       				} else if(elem._browser == "moz") {
-      					elem.$.qrVideo.mozSrcObject = stream;
-      					elem.$.qrVideo.play();
+      					elem.$$("#qrVideo").mozSrcObject = stream;
+      					elem.$$("#qrVideo").play();
       				} else {
-      					elem.$.qrVideo.srcObject = stream;
+      					elem.$$("#qrVideo").srcObject = stream;
       				}
       				elem._captureVideo();
       			}
@@ -308,7 +366,7 @@ Typical usage:
         _captureVideo: function(){
   				try {
             if (this.active) {
-  						this._context.drawImage(this.$.qrVideo, 0, 0);
+  						this._context.drawImage(this.$$("#qrVideo"), 0, 0);
   						qrcode.decode("",this.$.qrCanvas);
               // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
             }
@@ -317,7 +375,24 @@ Typical usage:
   				} finally {
   					this.async(this._captureVideo, this._refresh);
   				}
-  			}
+  			},
+
+        _openMediaStream: function() {
+          console.debug("[granite-qrcode-scanner] _openMediaStream", this._stream);
+          if (!this._stream) {
+            this._initWebcam();
+          } else {
+            this._initWebcam();
+          }
+        },
+        _closeMediaStream: function() {
+          console.debug("[granite-qrcode-scanner] _closeMediaStream", this._stream);
+          if (this._stream && this._stream.active) {
+            console.debug("[granite-qrcode-scanner] _closeMediaStream - Media stream active");
+            this._stream.getTracks()[0].stop();
+            this._stype = 0;
+          }
+        },
       });
     </script>
 
