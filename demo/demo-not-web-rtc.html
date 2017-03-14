@@ -75,14 +75,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               margin: 0 16px ;
             }
     			</style>
-          <granite-qrcode-scanner data="{{data}}" active="{{active}}"></granite-qrcode-scanner>
+          <granite-qrcode-scanner 
+              data="{{data}}" 
+              force-not-web-rtc></granite-qrcode-scanner>
 
           <div>
             Scanned QR code: [[data]]
           </div>
 
-          <div>Scanner status</div>
-          <div class="layout horizontal"> Off <paper-toggle-button active="{{active}}"></paper-toggle-button>On</div>
     		</template>
     		<script>
           window.addEventListener('WebComponentsReady', function() {
@@ -90,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               is: "full-demo",
               properties: {
                 active: {
-                  type: boolean,
+                  type: Boolean,
                   value: false
                 }
               },

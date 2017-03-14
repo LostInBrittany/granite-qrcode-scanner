@@ -175,6 +175,10 @@ Typical usage:
             type: Boolean,
             notify: true,
             value: false
+          },
+          forceNotWebRtc: {
+            type: Boolean,
+            value: false
           }
         },
 
@@ -272,6 +276,9 @@ Typical usage:
         // Other methods
         // *********************************************************************
         _doesSupportWebRtc: function() {
+          if (this.forceNotWebRtc) {
+            return false;
+          }
           if (navigator.mediaDevices || 
               navigator.getUserMedia || 
               navigator.webkitGetUserMedia || 
