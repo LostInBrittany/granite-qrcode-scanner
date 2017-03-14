@@ -171,11 +171,17 @@ Typical usage:
             type: Boolean,
             value: false
           },
+          /**
+            * The element will set it to true if it supports WebRTC
+            */
           webRtc: {
             type: Boolean,
             notify: true,
             value: false
           },
+          /**
+           * If true, the scanner will work in not-WebRTC mode (i.e. it disables WebRTC support)
+           */
           forceNotWebRtc: {
             type: Boolean,
             value: false
