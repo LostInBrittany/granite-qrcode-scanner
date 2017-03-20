@@ -403,7 +403,9 @@ Typical usage:
       				} else {
       					elem.$$("#qrVideo").srcObject = stream;
       				}
-      				elem._captureVideo();
+              if (this.continuous) {
+      				  elem._captureVideo();
+              }
       			}
             function _onCameraError(e) {
       				console.log("[granite-qrcode-scanner] _onCameraError", e);
