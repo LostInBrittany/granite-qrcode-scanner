@@ -81,7 +81,9 @@ Typical usage:
 
         <template is="dom-if" if="[[webRtc]]">
           <div class="videoContainer">  
-            <video id="qrVideo" autoplay width="[[width]]" height="[[height]]" hide$="[[!active]]" on-tap="_desactivate"></video>
+            <video id="qrVideo" autoplay width="[[width]]" height="[[height]]" hide ></video>
+
+            <canvas id="qrCanvasDisplay" width="[[width]]" height="[[height]]" hide$="[[!active]]" on-tap="_desactivate"></canvas>
             <template is="dom-if" if="[[!continuous]]">
               <div class="pictureControls" hide$="[[!active]]" on-tap="_captureVideo">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 256 256"><path d="M19.6 3.9C10.8 3.9 3.7 11 3.7 19.8L3.7 236.4C3.7 245.2 10.8 252.3 19.6 252.3L236.2 252.3C245 252.3 252.1 245.2 252.1 236.4L252.1 19.8C252.1 11 245 3.9 236.2 3.9L19.6 3.9zM108.8 39.2L146.9 39.2C156.5 39.2 166 48.7 166 58.2 166 60.4 165.5 62.5 164.7 64.6L204.1 64.6C216.8 64.6 229.5 77.3 229.5 90L229.5 191.6C229.5 204.3 216.8 217 204.1 217L51.7 217C39 217 26.3 204.3 26.3 191.6L26.3 90C26.3 77.3 39 64.6 51.7 64.6L91.1 64.6C90.3 62.5 89.8 60.4 89.8 58.2 89.8 48.7 99.3 39.2 108.8 39.2zM127.9 90C99.8 90 77.1 112.7 77.1 140.8 77.1 168.9 99.8 191.6 127.9 191.6 156 191.6 178.7 168.9 178.7 140.8 178.7 112.7 156 90 127.9 90zM127.9 115.4C141.9 115.4 153.3 126.8 153.3 140.8 153.3 154.8 141.9 166.2 127.9 166.2 113.9 166.2 102.5 154.8 102.5 140.8 102.5 126.8 113.9 115.4 127.9 115.4z" style="stroke-linejoin:round;stroke-width:8"/></svg>
@@ -259,11 +261,11 @@ Typical usage:
         // *********************************************************************
         _getCanvasWidth: function() {
             // The biggest the canvas, ther best the detection
-            return 3*this.width;
+            return 2*this.width;
         },
         _getCanvasHeight: function() {
             // The biggest the canvas, ther best the detection
-            return 3*this.height;
+            return 2*this.height;
         },
 
         // *********************************************************************
@@ -406,6 +408,9 @@ Typical usage:
               if (this.continuous) {
       				  elem._captureVideo();
               }
+
+              elem._drawCanvas();
+
       			}
             function _onCameraError(e) {
       				console.log("[granite-qrcode-scanner] _onCameraError", e);
@@ -418,10 +423,23 @@ Typical usage:
             }            
         },
 
+        _drawCanvas: function() {
+          if(!this.active) { 
+            return false 
+          };
+          this.$$("#qrCanvasDisplay").getContext('2d').drawImage(this.$$("#qrVideo"), this.width/4, this.height/4, this.width*3/4, this.height*3/4, 0, 0, this.width, this.height);
+          // console.debug("qrCanvasDisplay")  
+          this.async(this._drawCanvas,20);       
+        },
+
         _captureVideo: function(){
+          if(!this.active) { 
+            return false 
+          };
           if (!this.continuous) {
             console.debug("[granite-qrcode-scanner] _captureVideo");
           }
+          console.debug("_captureVideo")  
   				try {
             if (this.active) {
   						this._context.drawImage(this.$$("#qrVideo"), 0, 0);

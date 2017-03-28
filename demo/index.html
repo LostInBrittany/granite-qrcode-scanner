@@ -46,6 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-icons/iron-icons.html">
+    <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
 
     <link rel="import" href="../../granite-qrcode-scanner/granite-qrcode-scanner.html">
 
@@ -62,12 +63,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         color: white;
       }
       demo-snippet.vertical-centered-demo {
-       --demo-snippet-demo: {
-         @apply(--layout-vertical);
-         @apply(--layout-wrap);
-         @apply(--layout-center-justified);
-       }
-     }
+        --demo-snippet-demo: {
+          @apply(--layout-vertical);
+          @apply(--layout-wrap);
+          @apply(--layout-center-justified);
+        }
+      }
+      div {
+        margin: 16px 0;
+      }
+      .layout.horizontal {
+        display: flex;
+        flex-flow: row nowrap;;
+      }
+      paper-toggle-button {
+        margin: 0 16px ;
+      }
+      .content {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        width: 100%;
+      }
     </style>
   </head>
 
@@ -76,8 +93,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       <h3>Basic usage</h3>
       <demo-snippet class="vertical-centered-demo">
-        <template>
-          <granite-qrcode-scanner></granite-qrcode-scanner>
+        <template is="dom-bind">
+          <div class="content">
+            <granite-qrcode-scanner data="{{data}}" active="{{active}}" continuous></granite-qrcode-scanner>
+            <div class="layout horizontal"> Off <paper-toggle-button active="{{active}}"></paper-toggle-button>On</div>
+            <div>
+              Scanned QR code: [[data]]
+            </div>
+          </div>  
         </template>
       </demo-snippet>
     </div>
