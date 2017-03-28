@@ -19,7 +19,7 @@
 <!--
 ```
 <custom-element-demo>
-  <template is="dom-bind">
+  <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="granite-qrcode-scanner.html">
     <next-code-block></next-code-block>
@@ -28,10 +28,7 @@
 ```
 -->
 ```html
-  <template is="dom-bind">
-    <granite-qrcode-scanner data="{{data}}" active continuous></granite-qrcode-scanner>
-    <div>Scanned QR code: [[data]]</div>
-  </template>
+<granite-qrcode-scanner data="{{data}}" active continuous></granite-qrcode-scanner>
 ```
 
 ## Install
