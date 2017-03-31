@@ -96,9 +96,8 @@ Typical usage:
        *
        * @event qrcode-decoded
        */
-      static get config() {
+      static get properties() {
         return {
-          properties: {
             /**
              * If true the elements scans for QR code
              */
@@ -133,7 +132,6 @@ Typical usage:
               observer: '_updateHeigh'
             }
           }
-        }
       }
 
       constructor() {

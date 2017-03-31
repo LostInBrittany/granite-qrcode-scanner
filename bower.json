@@ -16,7 +16,7 @@
   "homepage": "https://github.com/LostInBrittany/granite-qrcode-scanner",
   "ignore": [],
   "dependencies": {
-    "polymer": "Polymer/polymer#2.0-preview",
+    "polymer": "Polymer/polymer#2.0.0-rc.2",
     "jsqrcode": "LostInBrittany/jsqrcode#^1.0.1",
     "granite-file-reader": "Binomed/granite-file-reader#2.0-preview"
   },
