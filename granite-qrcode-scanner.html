@@ -405,8 +405,8 @@ Typical usage:
       				} else {
       					elem.$$("#qrVideo").srcObject = stream;
       				}
-              if (this.continuous) {
-      				  elem._captureVideo();
+              if (elem.continuous) {
+      				  elem.async(elem._captureVideo, 1000);
               }
 
               elem._drawCanvas();
@@ -418,9 +418,11 @@ Typical usage:
       			}
 
             this._stype=1;
+            /*
             if (this.continuous) {
               this.async(this._captureVideo, this._refresh);
-            }            
+            } 
+            */           
         },
 
         _drawCanvas: function() {
@@ -433,18 +435,19 @@ Typical usage:
         },
 
         _captureVideo: function(){
+          console.debug("_captureVideo")  
           if(!this.active) { 
             return false 
           };
           if (!this.continuous) {
             console.debug("[granite-qrcode-scanner] _captureVideo");
           }
-          console.debug("_captureVideo")  
   				try {
             if (this.active) {
-  						this._context.drawImage(this.$$("#qrVideo"), 0, 0);
+  						this._context.drawImage(this.$$("#qrCanvasDisplay"), 0, 0);
   						qrcode.decode("",this.$.qrCanvas);
               // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
+              this._closeMediaStream();
             }
   				} catch (e) {
             // console.debug("[granite-qrcode-scanner] _captureVideo - error", e);
@@ -465,6 +468,9 @@ Typical usage:
         },
         _closeMediaStream: function() {
           console.debug("[granite-qrcode-scanner] _closeMediaStream", this._stream);
+          if (this.$$("#qrCanvasDisplay")) {
+            this.$$("#qrCanvasDisplay").getContext('2d').clearRect(0, 0, this.width, this.height);
+          }          
           if (this._stream && this._stream.active) {
             console.debug("[granite-qrcode-scanner] _closeMediaStream - Media stream active");
             this._stream.getTracks()[0].stop();
