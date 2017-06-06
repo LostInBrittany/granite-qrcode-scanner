@@ -235,9 +235,10 @@ Typical usage:
 
           this.webRtc = this._doesSupportWebRtc();
 
-          this.customStyle['--placeholder-width'] = this.width+'px';
-          this.customStyle['--placeholder-height'] = this.height+'px';
-          this.updateStyles();
+          this.updateStyles({ 
+            '--placeholder-width': this.width+'px',
+            '--placeholder-height': this.height+'px'
+          });
 
           this._isAttached = true;
 

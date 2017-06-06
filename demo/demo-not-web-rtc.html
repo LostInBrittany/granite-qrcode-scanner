@@ -19,11 +19,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
 
     <script>
-
       // setup Polymer options
       window.Polymer = {lazyRegister: true, dom: 'shadow'};
+
+      // load webcomponents polyfills
+      (function() {
+        if ('registerElement' in document
+            && 'import' in document.createElement('link')
+            && 'content' in document.createElement('template')) {
+          // browser has web components
+        } else {
+          // polyfill web components
+          var e = document.createElement('script');
+          e.src = '../../webcomponentsjs/webcomponents-lite.js';
+          document.head.appendChild(e);
+        }
+      })();
     </script>
-    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link   rel="import" href="../../polymer/polymer.html">
 
 
@@ -55,7 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       <h3>Full demo</h3>
 
-      <dom-module is="full-demo">
+      <dom-module id="full-demo">
     		<template>
     			<style>
     				:host {
@@ -85,16 +97,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     		</template>
     		<script>
-          window.addEventListener('WebComponentsReady', function() {
-            Polymer({
-              is: "full-demo",
-              properties: {
-                active: {
-                  type: Boolean,
-                  value: false
-                }
-              },
-            });
+          Polymer({
+            is: "full-demo",
+            properties: {
+              active: {
+                type: Boolean,
+                value: false
+              }
+            },
           });
         </script>
     	</dom-module>

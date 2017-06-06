@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         } else {
           // polyfill web components
           var e = document.createElement('script');
-          e.src = '../../webcomponentsjs/webcomponents-lite.min.js';
+          e.src = '../../webcomponentsjs/webcomponents-lite.js';
           document.head.appendChild(e);
         }
       })();
@@ -93,15 +93,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       <h3>Basic usage</h3>
       <demo-snippet class="vertical-centered-demo">
-        <template is="dom-bind">
-          <div class="content">
-            <granite-qrcode-scanner data="{{data}}" active="{{active}}" continuous></granite-qrcode-scanner>
-            <div class="layout horizontal"> Off <paper-toggle-button active="{{active}}"></paper-toggle-button>On</div>
-            <div>
-              Scanned QR code: [[data]]
-            </div>
-          </div>  
-        </template>
+        <dom-bind>
+          <template>
+            <div class="content">
+              <granite-qrcode-scanner data="{{data}}" active="{{active}}" continuous></granite-qrcode-scanner>
+              <div class="layout horizontal"> Off <paper-toggle-button active="{{active}}"></paper-toggle-button>On</div>
+              <div>
+                Scanned QR code: [[data]]
+              </div>
+            </div>  
+          </template>
+        </dom-bind>
       </demo-snippet>
     </div>
   </body>
