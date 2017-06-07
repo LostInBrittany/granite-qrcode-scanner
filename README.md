@@ -5,8 +5,7 @@
 > A webcomponent to scan a QR Codes,
 > using [a modified version](https://github.com/LostInBrittany/jsqrcode) of [Lazersoft's jsqrcode](https://github.com/LazerSoft/jsqrcode) library, to allow `jsqrcode` to deal with ShadowDOM
 >
-> Polymer 1.5 ready
->
+> Hybrid Polymer element, 1.x-2.x ready
 
 
 ## Doc & demo
