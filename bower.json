@@ -56,5 +56,8 @@
   },
   "resolutions": {
     "webcomponentsjs": "^1.0.0"
+  },
+  "demos": {
+    "demo": "demo/index.html"
   }
 }
