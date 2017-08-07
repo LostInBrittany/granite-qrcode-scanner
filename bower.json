@@ -58,6 +58,7 @@
     "webcomponentsjs": "^1.0.0"
   },
   "demos": {
-    "demo": "demo/index.html"
+    "demo": "demo/index.html",
+    "demo without WebRTC": "demo/demo-not-web-rtc.html"
   }
 }

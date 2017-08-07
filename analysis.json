@@ -1,0 +1,842 @@
+{
+  "schema_version": "1.0.0",
+  "elements": [
+    {
+      "description": "`<granite-qrcode-scanner>` is an element to render a QR Code\n\nTypical usage:\n\n```html\n  <granite-qrcode-scanner active=\"[[active]]\"></granite-qrcode-scanner>\n```",
+      "summary": "",
+      "path": "granite-qrcode-scanner.html",
+      "properties": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "description": "If true the elements scans for QR code",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 136,
+              "column": 10
+            },
+            "end": {
+              "line": 140,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "data",
+          "type": "string",
+          "description": "The last decoded QRCode",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 145,
+              "column": 10
+            },
+            "end": {
+              "line": 149,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true
+            }
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "width",
+          "type": "number",
+          "description": "The width of the scanning window",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 153,
+              "column": 10
+            },
+            "end": {
+              "line": 156,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "320"
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "description": "The height of the scanning window",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 160,
+              "column": 10
+            },
+            "end": {
+              "line": 163,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "240"
+        },
+        {
+          "name": "placeholderMessage",
+          "type": "string",
+          "description": "The message to show when scanner isn't activated",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 10
+            },
+            "end": {
+              "line": 170,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "\"Tap here to activate scanner\""
+        },
+        {
+          "name": "_context",
+          "type": "Object",
+          "description": "The canvas 2d context",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 174,
+              "column": 10
+            },
+            "end": {
+              "line": 176,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          }
+        },
+        {
+          "name": "_browser",
+          "type": "string",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 177,
+              "column": 10
+            },
+            "end": {
+              "line": 180,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "\"\""
+        },
+        {
+          "name": "_stream",
+          "type": "Object",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 181,
+              "column": 10
+            },
+            "end": {
+              "line": 183,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          }
+        },
+        {
+          "name": "_refresh",
+          "type": "number",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 184,
+              "column": 10
+            },
+            "end": {
+              "line": 187,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "100"
+        },
+        {
+          "name": "_canvasWidth",
+          "type": "number",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 188,
+              "column": 10
+            },
+            "end": {
+              "line": 191,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_canvasHeight",
+          "type": "number",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 192,
+              "column": 10
+            },
+            "end": {
+              "line": 195,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
+          "name": "_isAttached",
+          "type": "boolean",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 196,
+              "column": 10
+            },
+            "end": {
+              "line": 199,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "webRtc",
+          "type": "boolean",
+          "description": "The element will set it to true if it supports WebRTC",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 203,
+              "column": 10
+            },
+            "end": {
+              "line": 207,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "notify": true
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "continuous",
+          "type": "boolean",
+          "description": "If true, the decoding algorithm will run 10 times a second\nIf fals, it will ran only when tapping on the element",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 212,
+              "column": 10
+            },
+            "end": {
+              "line": 215,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "false"
+        },
+        {
+          "name": "forceNotWebRtc",
+          "type": "boolean",
+          "description": "If true, the scanner will work in not-WebRTC mode (i.e. it disables WebRTC support)",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 219,
+              "column": 10
+            },
+            "end": {
+              "line": 223,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "observer": "\"_onForceNotWebRtcChange\""
+            }
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [
+        {
+          "name": "attached",
+          "description": "********************************************************************",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 233,
+              "column": 8
+            },
+            "end": {
+              "line": 255,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getCanvasWidth",
+          "description": "********************************************************************",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 262,
+              "column": 8
+            },
+            "end": {
+              "line": 265,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_getCanvasHeight",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 266,
+              "column": 8
+            },
+            "end": {
+              "line": 269,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_onScannerActiveChange",
+          "description": "********************************************************************",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 274,
+              "column": 8
+            },
+            "end": {
+              "line": 283,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_onForceNotWebRtcChange",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 284,
+              "column": 8
+            },
+            "end": {
+              "line": 289,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_onFileRead",
+          "description": "********************************************************************",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 297,
+              "column": 8
+            },
+            "end": {
+              "line": 309,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "evt"
+            },
+            {
+              "name": "data"
+            }
+          ]
+        },
+        {
+          "name": "_activate",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 311,
+              "column": 8
+            },
+            "end": {
+              "line": 313,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_desactivate",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 314,
+              "column": 8
+            },
+            "end": {
+              "line": 316,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_doesSupportWebRtc",
+          "description": "********************************************************************",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 321,
+              "column": 8
+            },
+            "end": {
+              "line": 336,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_initWebcam",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 338,
+              "column": 8
+            },
+            "end": {
+              "line": 366,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_initWebcam2",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 368,
+              "column": 8
+            },
+            "end": {
+              "line": 426,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "options"
+            }
+          ]
+        },
+        {
+          "name": "_drawCanvas",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 428,
+              "column": 8
+            },
+            "end": {
+              "line": 435,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_captureVideo",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 437,
+              "column": 8
+            },
+            "end": {
+              "line": 459,
+              "column": 6
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_openMediaStream",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 461,
+              "column": 8
+            },
+            "end": {
+              "line": 468,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_closeMediaStream",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 469,
+              "column": 8
+            },
+            "end": {
+              "line": 479,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        }
+      ],
+      "demos": [
+        {
+          "url": "demo/index.html",
+          "description": ""
+        }
+      ],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 115,
+          "column": 14
+        },
+        "end": {
+          "line": 480,
+          "column": 7
+        }
+      },
+      "privacy": "public",
+      "attributes": [
+        {
+          "name": "active",
+          "description": "If true the elements scans for QR code",
+          "sourceRange": {
+            "start": {
+              "line": 136,
+              "column": 10
+            },
+            "end": {
+              "line": 140,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        },
+        {
+          "name": "data",
+          "description": "The last decoded QRCode",
+          "sourceRange": {
+            "start": {
+              "line": 145,
+              "column": 10
+            },
+            "end": {
+              "line": 149,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "string"
+        },
+        {
+          "name": "width",
+          "description": "The width of the scanning window",
+          "sourceRange": {
+            "start": {
+              "line": 153,
+              "column": 10
+            },
+            "end": {
+              "line": 156,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "number"
+        },
+        {
+          "name": "height",
+          "description": "The height of the scanning window",
+          "sourceRange": {
+            "start": {
+              "line": 160,
+              "column": 10
+            },
+            "end": {
+              "line": 163,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "number"
+        },
+        {
+          "name": "placeholder-message",
+          "description": "The message to show when scanner isn't activated",
+          "sourceRange": {
+            "start": {
+              "line": 167,
+              "column": 10
+            },
+            "end": {
+              "line": 170,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "string"
+        },
+        {
+          "name": "web-rtc",
+          "description": "The element will set it to true if it supports WebRTC",
+          "sourceRange": {
+            "start": {
+              "line": 203,
+              "column": 10
+            },
+            "end": {
+              "line": 207,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        },
+        {
+          "name": "continuous",
+          "description": "If true, the decoding algorithm will run 10 times a second\nIf fals, it will ran only when tapping on the element",
+          "sourceRange": {
+            "start": {
+              "line": 212,
+              "column": 10
+            },
+            "end": {
+              "line": 215,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        },
+        {
+          "name": "force-not-web-rtc",
+          "description": "If true, the scanner will work in not-WebRTC mode (i.e. it disables WebRTC support)",
+          "sourceRange": {
+            "start": {
+              "line": 219,
+              "column": 10
+            },
+            "end": {
+              "line": 223,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        }
+      ],
+      "events": [
+        {
+          "type": "CustomEvent",
+          "name": "qrcode-decoded",
+          "description": "qrcode-decoded",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "web-rtc-support",
+          "description": "web-rtc-support",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "active-changed",
+          "description": "Fired when the `active` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "data-changed",
+          "description": "Fired when the `data` property changes.",
+          "metadata": {}
+        },
+        {
+          "type": "CustomEvent",
+          "name": "web-rtc-changed",
+          "description": "Fired when the `webRtc` property changes.",
+          "metadata": {}
+        }
+      ],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "granite-qrcode-scanner",
+      "superclass": "HTMLElement"
+    },
+    {
+      "description": "",
+      "summary": "",
+      "path": "demo/demo-not-web-rtc.html",
+      "properties": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 102,
+              "column": 14
+            },
+            "end": {
+              "line": 105,
+              "column": 15
+            }
+          },
+          "metadata": {
+            "polymer": {}
+          },
+          "defaultValue": "false"
+        }
+      ],
+      "methods": [],
+      "demos": [],
+      "metadata": {},
+      "sourceRange": {
+        "start": {
+          "line": 99,
+          "column": 18
+        },
+        "end": {
+          "line": 107,
+          "column": 11
+        }
+      },
+      "privacy": "public",
+      "attributes": [
+        {
+          "name": "active",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 102,
+              "column": 14
+            },
+            "end": {
+              "line": 105,
+              "column": 15
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        }
+      ],
+      "events": [],
+      "styling": {
+        "cssVariables": [],
+        "selectors": []
+      },
+      "slots": [],
+      "tagname": "full-demo",
+      "superclass": "HTMLElement"
+    }
+  ]
+}
