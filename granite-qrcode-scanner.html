@@ -170,6 +170,19 @@ Typical usage:
             value: "Tap here to activate scanner",
           } ,
           /**
+           * The facing mode for the camera, as on https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
+           * The following strings are permitted values for the facing mode. 
+           * These may represent separate cameras, or they may represent directions in which an adjustable camera can be pointed.
+           * - user: The video source is facing toward the user; this includes, for example, the front-facing camera on a smartphone.
+           * - environment: The video source is facing away from the user, thereby viewing their environment. 
+           * - left: The video source is facing toward the user but to their left, such as a camera aimed toward the user but over their left shoulder.
+           * - right: The video source is facing toward the user but to their right, such as a camera aimed toward the user but over their right shoulder.
+           */
+          facingMode: {
+            type: String,
+            value: '',
+          },
+          /**
            * The canvas 2d context
            */
           _context: {
@@ -346,8 +359,13 @@ Typical usage:
         			  devices.forEach(function(device) {
           				if (device.kind === 'videoinput') {
                     console.debug("[granite-qrcode-scanner] _initWebcam - device found", device.kind + ": " + device.label +" id = " + device.deviceId);
-          				  if(device.label.toLowerCase().search("back") >-1 /* || device.label.toLowerCase().search("rear") >-1 */) {
-          					  options={'deviceId': {'exact':device.deviceId}, 'facingMode': 'environment'} ;
+                    console.debug("[granite-qrcode-scanner] _initWebcam - facingMode", elem.facingMode);
+                    if (!elem.facingMode) { 
+          				    if( (device.label.toLowerCase().search("back") >-1) || (device.label.toLowerCase().search("rear") >-1 ) ) {
+          					    options={'deviceId': {'exact':device.deviceId}, 'facingMode': 'environment'} ;
+                      }
+                    } else {
+                      options={'deviceId': {'exact':device.deviceId}, 'facingMode': elem.facingMode}
                     }
           				}
           				console.debug("[granite-qrcode-scanner] _initWebcam", device.kind + ": " + device.label +" id = " + device.deviceId, "options", options);
