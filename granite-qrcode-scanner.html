@@ -433,7 +433,7 @@ Typical usage:
       			}
             function _onCameraError(e) {
       				console.log("[granite-qrcode-scanner] _onCameraError", e);
-      				alert("Can't access to webcam");
+      				elem.fire("camera-error", e);
       			}
 
             this._stype=1;
