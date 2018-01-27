@@ -362,10 +362,18 @@ Typical usage:
                     console.debug("[granite-qrcode-scanner] _initWebcam - facingMode", elem.facingMode);
                     if (!elem.facingMode) { 
           				    if( (device.label.toLowerCase().search("back") >-1) || (device.label.toLowerCase().search("rear") >-1 ) ) {
-          					    options={'deviceId': {'exact':device.deviceId}, 'facingMode': 'environment'} ;
+          					    options={
+                          'deviceId': {'exact':device.deviceId}, 
+                          'facingMode': 'environment',
+                          'video': { 'width': this.width, 'height': this.height }
+                        } ;
                       }
                     } else {
-                      options={'deviceId': {'exact':device.deviceId}, 'facingMode': elem.facingMode}
+                      options={
+                        'deviceId': {'exact':device.deviceId}, 
+                        'facingMode': elem.facingMode,
+                        'video': { 'width': this.width, 'height': this.height }
+                      }
                     }
           				}
           				console.debug("[granite-qrcode-scanner] _initWebcam", device.kind + ": " + device.label +" id = " + device.deviceId, "options", options);
