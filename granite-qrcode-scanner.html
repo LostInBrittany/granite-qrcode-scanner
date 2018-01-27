@@ -465,15 +465,17 @@ Typical usage:
             if (this.active) {
   						this._context.drawImage(this.$$("#qrCanvasDisplay"), 0, 0);
   						qrcode.decode("",this.$.qrCanvas);
-              // console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
-              this._closeMediaStream();
+              console.debug("[granite-qrcode-scanner] _captureVideo - Image drawn", qrcode);
             }
   				} catch (e) {
-            // console.debug("[granite-qrcode-scanner] _captureVideo - error", e);
+            console.debug("[granite-qrcode-scanner] _captureVideo - error", e);
   				} finally {  					
+            console.debug("[granite-qrcode-scanner] _captureVideo - finally", this.continuous);
             if (this.continuous) {
               this.async(this._captureVideo, this._refresh);
-            }               
+            } else {
+              this._closeMediaStream();
+            }              
   				}
   			},
 
