@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>granite-js-dependencies-grabber demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../granite-js-dependencies-grabber.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic granite-js-dependencies-grabber demo</h3>
+      <demo-snippet>
+        <template>
+          <dom-bind id="bindingDemo">
+             <template>
+              <div id="history"></div>
+              <granite-js-dependencies-grabber 
+                  id="granite-js-dependencies-grabber-demo"
+                  dependencies='[{"name":"moment","url":"../moment/min/moment.min.js"},{"name":"Chart","url":"../chart.js/dist/Chart.min.js"}]' 
+                  debug></granite-js-dependencies-grabber>
+              </template>
+            </dom-bind>            
+        </template>
+      </demo-snippet>
+    </div>
+
+
+    <script>
+        console.log(document.querySelector('#granite-js-dependencies-grabber-demo'));
+        document.querySelector('#granite-js-dependencies-grabber-demo').addEventListener('dependency-is-ready', (evt) => {
+          console.log('Got dependency', evt.detail);
+          document.getElementById('history').innerHTML =
+            document.querySelector('#granite-js-dependencies-grabber-demo').history;
+        });
+    </script>
+  </body>
+</html>

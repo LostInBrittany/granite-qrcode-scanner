@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>granite-qrcode-decoder demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../app-media/app-media-devices.html">
+    <link rel="import" href="../../app-media/app-media-stream.html">
+    <link rel="import" href="../../app-media/app-media-video.html">
+    <link rel="import" href="../../app-media/app-media-image-capture.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../granite-qrcode-decoder.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+
+      <h3>Decoding image url demo</h3>
+      <demo-snippet>
+        <template>
+          <dom-bind>
+            <template>
+              <div class="content">
+                Image to decode:
+                <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQMAAADS6sNKAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABn0lEQVR4nO2aS46EMAxELXEAjsTVcyQO0FJ6sF0xBBazmlGhqoW7SV6ywYk/3WaSJEmSJP2Peupjtu3H42GaLd1sxVwTz8vHw/qxAFpRPlaIeE5+zTl3ijDTmPg38Lb9fCkj/m28DeOLTPwreP9YM17DLL+4/8Uz8Cm/xSeDOfG8/GXlNWg/UuK5eAA9Uu2soo7z7jWW4dCLJ+Uj7dozcjtfE1FDN/G8/EmneA1HiWxNPDOPVMy8y+Vjno9ZGjPxzDxqp2Z+toHmRsuD/4jn4ROAF/RRTw1HEU/M+1w0uFwRpZGK4eSLZ+UvpxzHf8Tr2M3EE/Nr3ufoYjq/ZHn1cJ+LZ+LrjdfKdAUY8cR8NTCnUgqucPcf8UR8lVJxlfse2e86NN/n4rn4fOPV5fKVg282STwXf14ZrepLenbrd4nn4nGuP8MzvJTqHY3s+f4Xz8XHw+h3HaosTDw/f3n36ILAUVptKZ6bv/9LKwO5+FfwMbwhXlvk4A+/L4un4v0jvKAPqtCn/qd4Hj6FAO3Ltx2L7v0T8VS8JEmSJEl/qS/3CycsizQPTAAAAABJRU5ErkJggg==">
+                <granite-qrcode-decoder
+                    last-decoded-data="{{data}}"
+                    data-url="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQMAAADS6sNKAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABn0lEQVR4nO2aS46EMAxELXEAjsTVcyQO0FJ6sF0xBBazmlGhqoW7SV6ywYk/3WaSJEmSJP2Peupjtu3H42GaLd1sxVwTz8vHw/qxAFpRPlaIeE5+zTl3ijDTmPg38Lb9fCkj/m28DeOLTPwreP9YM17DLL+4/8Uz8Cm/xSeDOfG8/GXlNWg/UuK5eAA9Uu2soo7z7jWW4dCLJ+Uj7dozcjtfE1FDN/G8/EmneA1HiWxNPDOPVMy8y+Vjno9ZGjPxzDxqp2Z+toHmRsuD/4jn4ROAF/RRTw1HEU/M+1w0uFwRpZGK4eSLZ+UvpxzHf8Tr2M3EE/Nr3ufoYjq/ZHn1cJ+LZ+LrjdfKdAUY8cR8NTCnUgqucPcf8UR8lVJxlfse2e86NN/n4rn4fOPV5fKVg282STwXf14ZrepLenbrd4nn4nGuP8MzvJTqHY3s+f4Xz8XHw+h3HaosTDw/f3n36ILAUVptKZ6bv/9LKwO5+FfwMbwhXlvk4A+/L4un4v0jvKAPqtCn/qd4Hj6FAO3Ltx2L7v0T8VS8JEmSJEl/qS/3CycsizQPTAAAAABJRU5ErkJggg==" 
+                    debug></granite-qrcode-decoder>
+                  Decoded QR code: [[data]]
+                </div>
+              </div>  
+            </template>
+          </dom-bind>
+        </template>
+      </demo-snippet>
+
+      <h3>Decoding canvas demo</h3>
+      <demo-snippet>
+        <template>
+          <dom-bind>
+            <template is="bindingTemplate1">
+              <div class="content">
+                Image to decode:
+                <canvas id="qr-canvas" width="300" height="300"></canvas>
+                <granite-qrcode-decoder
+                    id="qrcodeDecoder1"
+                    last-decoded-data="{{data}}"
+                    debug></granite-qrcode-decoder>
+                  Decoded QR code: [[data]]
+                </div>
+              </div>  
+            </template>
+          </dom-bind>
+        </template>
+      </demo-snippet>     
+      <script>
+        let bindingTemplate1 = document.querySelector('#bindingTemplate');
+        let qrCanvas = document.querySelector('#qr-canvas');
+        let qrcodeDecoder1 = document.querySelector('#qrcodeDecoder1');
+        let img1 = new Image();
+        img1.onload = function() {
+          qrCanvas.getContext('2d').drawImage(img1, 0, 0, 300, 300);
+          qrcodeDecoder1.decodeCanvas(qrCanvas);
+        };
+        img1.src = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQMAAADS6sNKAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABn0lEQVR4nO2aS46EMAxELXEAjsTVcyQO0FJ6sF0xBBazmlGhqoW7SV6ywYk/3WaSJEmSJP2Peupjtu3H42GaLd1sxVwTz8vHw/qxAFpRPlaIeE5+zTl3ijDTmPg38Lb9fCkj/m28DeOLTPwreP9YM17DLL+4/8Uz8Cm/xSeDOfG8/GXlNWg/UuK5eAA9Uu2soo7z7jWW4dCLJ+Uj7dozcjtfE1FDN/G8/EmneA1HiWxNPDOPVMy8y+Vjno9ZGjPxzDxqp2Z+toHmRsuD/4jn4ROAF/RRTw1HEU/M+1w0uFwRpZGK4eSLZ+UvpxzHf8Tr2M3EE/Nr3ufoYjq/ZHn1cJ+LZ+LrjdfKdAUY8cR8NTCnUgqucPcf8UR8lVJxlfse2e86NN/n4rn4fOPV5fKVg282STwXf14ZrepLenbrd4nn4nGuP8MzvJTqHY3s+f4Xz8XHw+h3HaosTDw/f3n36ILAUVptKZ6bv/9LKwO5+FfwMbwhXlvk4A+/L4un4v0jvKAPqtCn/qd4Hj6FAO3Ltx2L7v0T8VS8JEmSJEl/qS/3CycsizQPTAAAAABJRU5ErkJggg==';
+      </script>
+
+      <h3>Decoding app-media</h3>
+      <demo-snippet>
+        <template>
+          <dom-bind id="bindingTemplate2">
+            <template>
+              <div class="content">      
+                
+                <app-media-devices
+                    id="mediaDevices"
+                    on-devices-changed="_onDevicesChanged"
+                    on-selected-device-changed="_onSelectedDeviceChanged"
+                    devices="{{devices}}"
+                    selected-device="{{device}}"
+                    kind="videoinput"></app-media-devices>
+
+                <app-media-stream
+                    video-device="[[device]]"
+                    video-constraints='{"width": {"ideal": 480, "max": 480}, "height": {"ideal": 480, "max": 480}}'
+                    stream="{{videoStream}}"
+                    on-active-changed="_onActiveChanged"
+                    on-stream-changed="_onStreamChanged"
+                    active></app-media-stream>
+
+                <app-media-video
+                    id="video"
+                    source="[[videoStream]]"
+                    on-click="record"
+                    autoplay
+                    muted></app-media-video>
+
+                <app-media-image-capture
+                    id="imageCapture"
+                    fill-light-mode="[[fillLightMode]]"
+                    stream="[[videoStream]]"
+                    focus-mode="single-shot"
+                    last-photo="{{photo}}"></app-media-image-capture>
+
+                <granite-qrcode-decoder
+                    last-decoded-data="{{data2}}"
+                    blob="[[photo]]" 
+                    debug></granite-qrcode-decoder>
+                  Decoded QR code: [[data2]]
+                </div>
+              </div>  
+            </template>
+          </dom-bind>
+        </template>
+      </demo-snippet>
+
+      <script>
+        let bindingTemplate2 = document.querySelector('#bindingTemplate2');
+        bindingTemplate2._onDevicesChanged = (evt) => {
+          console.log('_onDevicesChanged', evt);
+          bindingTemplate2.$.mediaDevices.selectNextDevice();
+          console.dir(bindingTemplate2.devices);
+        };
+        bindingTemplate2._onSelectedDeviceChanged = (evt) => {
+          console.log('_onSelectedDeviceChanged', evt);
+          bindingTemplate2.device=evt.detail.value;
+          console.dir(bindingTemplate2.devices);
+        };
+        bindingTemplate2._onActiveChanged = (evt) => {
+          console.log('_onActiveChanged', evt);
+          console.dir(bindingTemplate2.device);
+        };
+        bindingTemplate2._onStreamChanged = (evt) => {
+          console.log('_onStreamChanged', evt);
+          console.dir(bindingTemplate2.device);
+        };
+        bindingTemplate2.record = () => {
+          console.log('record');
+          console.dir(bindingTemplate2.$.imageCapture);
+          bindingTemplate2.$.imageCapture.takePhoto();
+        };
+
+      </script>    
+    </div>
+
+  </body>
+</html>

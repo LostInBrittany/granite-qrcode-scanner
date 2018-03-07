@@ -1,0 +1,19 @@
+{
+  "name": "granite-app-media-periodic-image-capture",
+  "description": "An element extending app-media-image-capture allowing a periodic image capture (i.e. x images per second)",
+  "main": "granite-app-media-periodic-image-capture.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "app-media": "PolymerElements/app-media#^0.10.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "paper-slider": "PolymerElements/paper-slider#^2.0.4"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

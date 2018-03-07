@@ -1,0 +1,149 @@
+<!--
+@license MIT
+Copyright (c) 2016 Horacio "LostInBrittany" Gonzalez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../granite-js-dependencies-grabber/granite-js-dependencies-grabber.html">
+
+<dom-module id="granite-qrcode-decoder">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <granite-js-dependencies-grabber
+        dependencies='[{"name":"qrcode","url":"../jsqrcode/dist/jsqrcode.js"}]'
+        on-dependency-is-ready="_onDependencyIsReady"
+        debug="[[debug]]"></granite-js-dependencies-grabber>
+  </template>
+
+  <script>
+    /**
+     * `granite-qrcode-decoder`
+     * an element to decode a QR Code from an image
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    /* globals qrcode */
+    class GraniteQrcodeDecoder extends Polymer.Element {
+      static get is() { return 'granite-qrcode-decoder'; }
+
+      static get properties() {
+        return {
+          /**
+          * The last decoded QRCode
+          */
+          lastDecodedData: {
+            type: String,
+            notify: true,
+            value: '',
+          },
+          /**
+          * If true, send logs to the console
+          */
+          debug: {
+            type: Boolean,
+            value: false,
+          },
+          /**
+           * A dataURL string to decode. The decode is called everytime this property changes
+           */
+          dataUrl: {
+            type: String,
+            observer: '_onDataUrlChange',
+          },
+          /**
+           * A blob object to decode, coming for example from an `app-media-image-capture` element
+           */
+          blob: {
+            type: Object,
+            observer: '_onBlobChanged',
+          },
+          _qrcodeReady: {
+            type: Boolean,
+            value: false,
+            observer: '_onDataUrlChange',
+          },
+        };
+      }
+
+      static get observers() {
+        return [
+          '_onDataUrlChange(_qrcodeReady)',
+          '_onBlobChanged(_qrcodeReady)',
+        ];
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+
+      _onQrcodeReadyChanged() {
+          if (this.debug) {
+            console.log('[granite-qrcode-decoder] _onQrcodeReadyChanged', this._qrcodeReady);
+          }
+      }
+
+      _onDependencyIsReady() {
+        this._qrcodeReady = true;
+        qrcode.callback = (data) => {
+          this.lastDecodedData = data;
+          if (this.debug) {
+            console.log('[granite-qrcode-decoder] qrcode.callback', this.lastDecodedData);
+          }
+          this.dispatchEvent(new CustomEvent('qrcode-decoded', {detail: this.lastDecodedData}));
+        };
+          if (this.debug) {
+            console.log('[granite-qrcode-decoder] _onDependencyIsReady', this._qrcodeReady);
+          }
+      }
+
+      _onDataUrlChange() {
+        console.log('[granite-qrcode-decoder] _onDataUrlChange', this._qrcodeReady);
+        if (this._qrcodeReady && this.dataUrl) {
+          if (this.debug) {
+            console.log('[granite-qrcode-decoder] _onDataUrlChange', this.dataUrl);
+          }
+          qrcode.decode(this.dataUrl);
+        }
+      }
+
+      _onBlobChanged() {
+        console.log('[granite-qrcode-decoder] _onBlobChanged', this.blob, this._qrcodeReady);
+        if (this._qrcodeReady && this.blob) {
+          let reader = new FileReader();
+          reader.readAsDataURL(this.blob);
+          reader.onloadend = () => {
+            this.dataUrl = reader.result;
+            if (this.debug) {
+              console.log('[granite-qrcode-decoder] _onBlobChanged', this.dataUrl);
+            }
+          };
+        }
+      }
+
+      /**
+       * A method to decode a QR Code in a canvas
+       * @param qrcanvas Canvas the canvas
+       */
+      decodeCanvas(qrCanvas) {
+        if (this._qrcodeReady) {
+          qrcode.decode('', qrCanvas);
+          return;
+        }
+        setTimeout(() => this.decodeCanvas(qrCanvas), 1000);
+      }
+    }
+
+    window.customElements.define(GraniteQrcodeDecoder.is, GraniteQrcodeDecoder);
+  </script>
+</dom-module>

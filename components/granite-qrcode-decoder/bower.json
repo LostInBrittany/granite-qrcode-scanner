@@ -1,0 +1,19 @@
+{
+  "name": "granite-qrcode-decoder",
+  "description": "an element to decode a QR Code from an image",
+  "main": "granite-qrcode-decoder.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "jsqrcode": "LostInBrittany/jsqrcode#^1.0.1",
+    "granite-js-dependencies-grabber": "LostInBrittany/granite-js-dependencies-grabber#^1.1.0"
+  },
+  "devDependencies": {
+    "app-media": "PolymerElements/app-media#^0.10.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

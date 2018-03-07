@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>granite-app-media-periodic-image-capture demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../../paper-slider/paper-slider.html">
+
+    <link rel="import" href="../../app-media/app-media-devices.html">
+    <link rel="import" href="../../app-media/app-media-stream.html">
+    <link rel="import" href="../../app-media/app-media-video.html">    
+    <link rel="import" href="../granite-app-media-periodic-image-capture.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+        img {
+          max-width: 480px;
+        }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic granite-app-media-periodic-image-capture demo</h3>
+      <demo-snippet>
+        <template>
+            <dom-bind id="bindingTemplate">
+              <template>
+                <app-media-devices
+                    id="mediaDevices"
+                    on-devices-changed="_onDevicesChanged"
+                    on-selected-device-changed="_onSelectedDeviceChanged"
+                    devices="{{devices}}"
+                    selected-device="{{device}}"
+                    kind="videoinput"></app-media-devices>
+
+                <app-media-stream
+                    video-device="[[device]]"
+                    video-constraints='{"width": {"ideal": 480, "max": 480}, "height": {"ideal": 480, "max": 480}}'
+                    stream="{{videoStream}}"
+                    on-active-changed="_onActiveChanged"
+                    on-stream-changed="_onStreamChanged"
+                    active></app-media-stream>
+
+                <app-media-video
+                    id="video"
+                    source="[[videoStream]]"
+                    on-click="record"
+                    autoplay
+                    muted></app-media-video>
+
+                <granite-app-media-periodic-image-capture
+                    id="imageCapture"
+                    capture="[[capture]]"
+                    frequency="[[frequency]]"
+                    fill-light-mode="[[fillLightMode]]"
+                    stream="[[videoStream]]"
+                    focus-mode="single-shot"
+                    last-photo="{{photo}}"
+                    on-last-photo-changed="_onLastPhotoChanged"
+                    debug></granite-app-media-periodic-image-capture>
+
+                <paper-button 
+                    id="startCaptureButton"
+                    disabled="[[capture]]"
+                    on-click="_startCapture">Start capture</paper-button>
+                <paper-button 
+                    id="stopCaptureButton"
+                    disabled="[[!capture]]"
+                    on-click="_stopCapture">Stop capture</paper-button>
+                <paper-slider
+                    id="frequencySlider"
+                    min="0.1" max="10" step="0.1"
+                    value="{{frequency}}">Frequency (images per second)</paper-slider>
+
+                <img src="[[dataUrl]]">
+              </template>
+            </dom-bind>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <script>
+      let bindingTemplate = document.querySelector('#bindingTemplate');
+      bindingTemplate.capture = false;
+      bindingTemplate.frequency = 0.25;
+      bindingTemplate._onDevicesChanged = (evt) => {
+        console.log('_onDevicesChanged', evt);
+        bindingTemplate.$.mediaDevices.selectNextDevice();
+        console.dir(bindingTemplate.devices);
+      };
+      bindingTemplate._onSelectedDeviceChanged = (evt) => {
+        console.log('_onSelectedDeviceChanged', evt);
+        bindingTemplate.device=evt.detail.value;
+        console.dir(bindingTemplate.devices);
+      };
+      bindingTemplate._onActiveChanged = (evt) => {
+        console.log('_onActiveChanged', evt);
+        console.dir(bindingTemplate.device);
+      };
+      bindingTemplate._onStreamChanged = (evt) => {
+        console.log('_onStreamChanged', evt);
+        console.dir(bindingTemplate.device);
+      };
+      bindingTemplate._startCapture = () => {
+        bindingTemplate.capture = true;
+        console.log('capture', bindingTemplate.capture);
+      };
+      bindingTemplate._stopCapture = () => {
+        bindingTemplate.capture = false;
+        console.log('capture', bindingTemplate.capture);
+      };
+      bindingTemplate._onLastPhotoChanged = (evt) => {
+        console.log(evt.detail.value);
+        let reader = new FileReader();
+        reader.readAsDataURL(evt.detail.value);
+        reader.onloadend = () => {
+          bindingTemplate.dataUrl = reader.result;
+          // console.log('_onLastPhotoChanged', bindingTemplate.dataUrl);
+        };
+      };
+
+    </script>        
+  </body>
+</html>

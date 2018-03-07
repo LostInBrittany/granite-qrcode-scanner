@@ -1,0 +1,24 @@
+{
+  "name":"jsqrcode",
+  "homepage": "https://github.com/LostInBrittany/jsqrcode",
+  "authors": [
+    "Lazar Laszlo (http://lazarsoft.info)",
+    "Horacio Gonzalez (@LostInBrittany)"
+  ],
+  "description": "JavaScript QRCode reader for HTML5 enabled browser, fork of Lazarsoft's superb scanner, mofified to be compatible with ShadowDOM",
+  "main": "dist/qrcode.js",
+  "keywords": [
+    "jsqrcode",
+    "qrcode",
+    "reader",
+    "scanner"
+  ],
+  "license": "Apache License Version 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
