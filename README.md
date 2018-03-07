@@ -6,7 +6,7 @@
 > using [a modified version](https://github.com/LostInBrittany/jsqrcode) of [Lazersoft's jsqrcode](https://github.com/LazerSoft/jsqrcode) library, to allow `jsqrcode` to deal with ShadowDOM
 >
 > This is a Polymer 2.x version, suited for evergreen browsers. For older browsers, please look 
-> at the [Polymer 1.x-hybrid]() version. 
+> at the [Polymer 1.x-hybrid](https://github.com/LostInBrittany/granite-qrcode-scanner/tree/polymer-1.x-hybrid) branch. 
 
 
 ## Doc & demo
