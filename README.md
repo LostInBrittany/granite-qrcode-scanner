@@ -5,9 +5,10 @@
 > A webcomponent to scan a QR Codes,
 > using [a modified version](https://github.com/LostInBrittany/jsqrcode) of [Lazersoft's jsqrcode](https://github.com/LazerSoft/jsqrcode) library, to allow `jsqrcode` to deal with ShadowDOM
 >
-> This is a Polymer 2.x version, suited for evergreen browsers. For older browsers, please look 
-> at the [Polymer 1.x-hybrid](https://github.com/LostInBrittany/granite-qrcode-scanner/tree/polymer-1.x-hybrid) branch. 
-
+>
+> Built on [lit-element](https://github.com/Polymer/lit-element)
+>
+> The old Polymer 2.x-1.x version is available on the [`polymer-hybrid` branch](https://github.com/LostInBrittany/granite-qrcode-decoder/tree/polymer-hybrid).
 
 ## Doc & demo
 
@@ -20,45 +21,48 @@
 ```
 <custom-element-demo>
   <template>
-    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="granite-qrcode-scanner.html">
+    <script src="@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="@granite-elements/granite-qrcode-decoder/granite-qrcode-scanner.js"></script>
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
 ```
 -->
 ```html
-<granite-qrcode-scanner data="{{data}}" active continuous></granite-qrcode-scanner>
+<granite-qrcode-scanner active continuous></granite-qrcode-scanner>
 ```
 
 ## Install
 
-Install the component using [Bower](http://bower.io/):
+
+
+Install the component using [npm](https://www.npmjs.com/):
 
 ```sh
-$ bower install LostInBrittany/granite-qrcode-scanner --save
+$ npm i @granite-elements/granite-qrcode-scanner 
 ```
 
-Or [download as ZIP](https://github.com/LostInBrittany/granite-qrcode-scanner/archive/gh-pages.zip).## Usage
+Once installed, import it in your application:
 
-1. Import Web Components' polyfill (if needed):
+import '@granite-elements/granite-qrcode-scanner/granite-qrcode-scanner.js';
 
-    ```html
-    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-    ```
 
-2. Import Custom Element:
+## Running demos and tests in browser
 
-    ```html
-    <link rel="import" href="bower_components/granite-qrcode-scanner/granite-qrcode-scanner.html">
-    ```
+1. Fork the `granite-qrcode-scanner` repository and clone it locally.
 
-3. Start using it!
+1. Make sure you have [npm](https://www.npmjs.com/) 
+and the [Polymer CLI](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) installed.
 
-    ```html
-    <granite-qrcode-scanner>
-    </granite-qrcode-scanner>
-    ```
+1. When in the `granite-qrcode-scanner` directory, run `npm install` to install dependencies.
+
+1. Serve the project using Polyumer CLI:
+
+    `polymer serve --npm`
+
+1. Open the demo in the browser
+
+    - http://127.0.0.1:8080/components/@greanite-elements/granite-qrcode-scanner/demo
 
 
 ## Contributing
