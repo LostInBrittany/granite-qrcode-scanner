@@ -147,7 +147,7 @@ class GraniteQrcodeScanner extends LitElement {
               <div id="buttonRow">
                   <mwc-fab 
                       icon="photo_camera" 
-                      @click="${this._takePhoto}"></paper-fab>
+                      @click="${this._takePhoto}"></mwc-fab>
               `:
               ``
             }
