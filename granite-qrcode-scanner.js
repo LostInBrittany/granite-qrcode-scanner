@@ -120,7 +120,7 @@ class GraniteQrcodeScanner extends LitElement {
           <app-media-stream
               .video-device="${this.device}"
               .videoDevice="${this.device}"
-              video-constraints='{"width": {"ideal": 480, "max": 480}, "height": {"ideal": 480, "max": 480}}'
+              video-constraints='{"width": {"ideal": 480}, "height": {"ideal": 480}}'
               @active-changed="${this._onActiveChanged}"
               @stream-changed="${this._onStreamChanged}"
               active></app-media-stream>
