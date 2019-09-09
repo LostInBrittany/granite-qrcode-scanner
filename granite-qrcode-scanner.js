@@ -8,7 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
 
 import '@granite-elements/granite-qrcode-decoder';
 import '@granite-elements/granite-app-media-periodic-image-capture';
@@ -60,6 +60,9 @@ class GraniteQrcodeScanner extends LitElement {
       photo: {
         type: Object,
       },
+      userMode: {
+        type: Boolean,
+      },
       /**
       * If true, send logs to the console
       */
@@ -69,46 +72,57 @@ class GraniteQrcodeScanner extends LitElement {
     };
   }
 
+  static get styles() {
+    return [
+      css`
+        :host {
+          display: block;
+        }
+
+        [hide] {
+          display: none !important;
+        }
+
+        #videoWindow {
+          position: relative;
+        }
+        #videoWindow #buttonRow {
+          position: absolute;
+          bottom: 1em;
+          left: 0;
+          right: 0;
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: center;
+
+        }
+        #videoWindow #targetSquare {
+          position: absolute;
+          left: 5em;
+          right: 5em;
+          top: 4em;
+          bottom: 6em;
+          border: solid 5px rgba(200,200,200,0.5);
+        }
+
+        .media {
+          display: flex;
+          flex-flow: column nowrap;
+          align-items: center;
+        }
+      `,
+    ];
+  }
+
+  facingMode() {
+    if (this.userMode) {
+      return 'user';
+    }
+    return 'environment';
+  }
+
   render() {
     return html`
-        <style>
-          :host {
-            display: block;
-          }
-
-          [hide] {
-            display: none !important;
-          }
-
-          #videoWindow {
-            position: relative;
-          }
-          #videoWindow #buttonRow {
-            position: absolute;
-            bottom: 1em;
-            left: 0;
-            right: 0;
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: center;
-
-          }
-          #videoWindow #targetSquare {
-            position: absolute;
-            left: 5em;
-            right: 5em;
-            top: 4em;
-            bottom: 6em;
-            border: solid 5px rgba(200,200,200,0.5);
-          }
-
-          .media {
-            display: flex;
-            flex-flow: column nowrap;
-            align-items: center;
-          }
-        </style>
-
         <div class="media">
 
           <app-media-devices
@@ -120,7 +134,7 @@ class GraniteQrcodeScanner extends LitElement {
           <app-media-stream
               .video-device="${this.device}"
               .videoDevice="${this.device}"
-              video-constraints='{"width": {"ideal": 480, "max": 480}, "height": {"ideal": 480, "max": 480}}'
+              video-constraints='{"width": {"ideal": 480, "max": 480}, "height": {"ideal": 480, "max": 480}, "facingMode":"${this.facingMode()}"}'
               @active-changed="${this._onActiveChanged}"
               @stream-changed="${this._onStreamChanged}"
               active></app-media-stream>
