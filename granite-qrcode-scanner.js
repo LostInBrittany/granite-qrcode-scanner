@@ -54,6 +54,9 @@ class GraniteQrcodeScanner extends LitElement {
       device: {
         type: Object,
       },
+      devices: {
+        type: Array,
+      },
       stream: {
         type: Object,
       },
@@ -125,17 +128,10 @@ class GraniteQrcodeScanner extends LitElement {
     return html`
         <div class="media">
 
-          <app-media-devices
-              id="mediaDevices"
-              @devices-changed="${this._onDevicesChanged}"
-              @selected-device-changed="${this._onSelectedDeviceChanged}"
-              kind="videoinput"></app-media-devices>
 
           <app-media-stream
-              .video-device="${this.device}"
-              .videoDevice="${this.device}"
               video-constraints=
-                '{"width": {"ideal": 480}, "height": {"ideal": 480}}, "facingMode":"${this.facingMode()}"'
+                '{"width": {"ideal": 480}, "height": {"ideal": 480}, "facingMode": { "exact": "${this.facingMode()}"}}'
               @active-changed="${this._onActiveChanged}"
               @stream-changed="${this._onStreamChanged}"
               active></app-media-stream>
@@ -196,12 +192,20 @@ class GraniteQrcodeScanner extends LitElement {
     `;
   }
 
+  _onDevicesChanged(evt) {
+    if (this.debug) {
+      console.log('[granite-qrcode-scanner] _onDevicesChanged', evt);
+    }
+    this.devices=evt.detail.value;
+
+      console.log('device',navigator.mediaDevices.getSupportedConstraints());  
+  }
   _onSelectedDeviceChanged(evt) {
     if (this.debug) {
       console.log('[granite-qrcode-scanner] _onSelectedDeviceChanged', evt);
     }
     this.device=evt.detail.value;
-    console.dir(this.devices);
+    console.dir(this.device);
   }
 
   _takePhoto(evt) {
