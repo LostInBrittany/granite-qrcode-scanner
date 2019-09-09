@@ -134,7 +134,8 @@ class GraniteQrcodeScanner extends LitElement {
           <app-media-stream
               .video-device="${this.device}"
               .videoDevice="${this.device}"
-              video-constraints='{"width": {"ideal": 480, "max": 480}, "height": {"ideal": 480, "max": 480}, "facingMode":"${this.facingMode()}"}'
+              video-constraints=
+                '{"width": {"ideal": 480}, "height": {"ideal": 480}}, "facingMode":"${this.facingMode()}"'
               @active-changed="${this._onActiveChanged}"
               @stream-changed="${this._onStreamChanged}"
               active></app-media-stream>
@@ -159,9 +160,10 @@ class GraniteQrcodeScanner extends LitElement {
               !this.active ?
               html`
               <div id="buttonRow">
-                  <mwc-fab 
-                      icon="photo_camera" 
-                      @click="${this._takePhoto}"></paper-fab>
+                <mwc-fab 
+                    icon="photo_camera" 
+                    @click="${this._takePhoto}"></mwc-fab>
+              </div>
               `:
               ``
             }
@@ -204,7 +206,7 @@ class GraniteQrcodeScanner extends LitElement {
 
   _takePhoto(evt) {
     if (this.debug) {
-      console.log('[granite-qrcode-scanner] _takePhoto');      
+      console.log('[granite-qrcode-scanner] _takePhoto');
     }
     let imageCapture = this.shadowRoot.querySelector('#imageCapture');
     console.dir(imageCapture);

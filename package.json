@@ -29,5 +29,5 @@
   },
   "main": "granite-qrcode-scanner.js",
   "module": "granite-qrcode-scanner.js",
-  "version": "3.0.2"
+  "version": "3.0.3"
 }
