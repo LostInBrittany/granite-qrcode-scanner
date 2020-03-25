@@ -75,6 +75,12 @@ class GraniteQrcodeScanner extends LitElement {
     };
   }
 
+  connectedCallback(){
+    super.connectedCallback();
+    let video = this.shadowRoot.querySelector('app-media-video');
+    video && video.play()
+  }
+  
   static get styles() {
     return [
       css`
@@ -226,6 +232,7 @@ class GraniteQrcodeScanner extends LitElement {
   }
 
   _onQrcodeDecoded(evt) {
+    evt.stopPropagation();
     if (this.debug) {
       console.log('[granite-qrcode-scanner] _onQrcodeDecoded', evt);
     }
