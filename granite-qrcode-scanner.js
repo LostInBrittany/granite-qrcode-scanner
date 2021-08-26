@@ -8,7 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 import '@granite-elements/granite-qrcode-decoder';
 import '@granite-elements/granite-app-media-periodic-image-capture';
@@ -74,7 +74,7 @@ class GraniteQrcodeScanner extends LitElement {
       },
     };
   }
-
+  
   connectedCallback(){
     super.connectedCallback();
     let video = this.shadowRoot.querySelector('app-media-video');
@@ -147,7 +147,6 @@ class GraniteQrcodeScanner extends LitElement {
             <app-media-video
                 id="video"
                 .source="${this.stream}"
-                @click="${this.record}"
                 autoplay
                 muted></app-media-video>
 
