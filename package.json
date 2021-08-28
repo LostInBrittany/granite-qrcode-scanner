@@ -17,15 +17,16 @@
   "license": "MIT",
   "dependencies": {
     "@granite-elements/granite-app-media-periodic-image-capture": "^2.0.0",
-    "@granite-elements/granite-qrcode-decoder": "^2.0.1",
-    "@material/mwc-fab": "^0.3.6",
-    "@material/mwc-ripple": "^0.3.6",
-    "lit-element": "^2.0.0"
+    "@granite-elements/granite-qrcode-decoder": "^3.0.2",
+    "@material/mwc-fab": "^0.22.1",
+    "@material/mwc-ripple": "^0.22.1",
+    "lit": "^2.0.0-rc.3"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.1.0",
-    "@webcomponents/webcomponentsjs": "^2.2.7",
-    "wct-browser-legacy": "^1.0.2"
+    "@webcomponents/webcomponentsjs": "^2.6.0",
+    "wct-browser-legacy": "^1.0.2",
+    "npm-check-updates": "^11.8.3"
   },
   "main": "granite-qrcode-scanner.js",
   "module": "granite-qrcode-scanner.js",
