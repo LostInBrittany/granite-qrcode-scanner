@@ -437,6 +437,20 @@ Typical usage:
               }
 
               elem._drawCanvas();
+			  
+			  // Enable camera/torch
+              const track = stream.getVideoTracks()[0];
+              window.setTimeout(() => (
+                onCapabilitiesReady(track.getCapabilities())
+              ), 500);
+              function onCapabilitiesReady(capabilities) {
+                if (capabilities.torch) {
+                  track.applyConstraints({
+                    advanced: [{ torch: true }]
+                  })
+                    .catch(e => console.log(e));
+                }
+              }
 
       			}
             function _onCameraError(e) {
