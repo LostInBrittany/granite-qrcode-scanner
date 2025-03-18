@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.1] - 2025-03-18
+
+### Fixed
+- Fixed Lit templating syntax in component templates
+- Corrected property and event binding syntax for Lit 3.x
+- Fixes issue #18 (6 years later!)
+
 ## [4.0.0] - 2025-03-18
 
 ### Breaking Changes

@@ -136,16 +136,16 @@ class GraniteQrcodeScanner extends LitElement {
           <app-media-stream
               video-constraints=
                 '{"width": {"ideal": 480}, "height": {"ideal": 480}, "facingMode": "${this.facingMode()}"}'
-              @active-changed="${this._onActiveChanged}"
-              @stream-changed="${this._onStreamChanged}"
+              @active-changed=${this._onActiveChanged}
+              @stream-changed=${this._onStreamChanged}
               active></app-media-stream>
 
           <div id="videoWindow">
 
             <app-media-video
                 id="video"
-                .source="${this.stream}"
-                @click="${this.record}"
+                .source=${this.stream}
+                @click=${this.record}
                 autoplay
                 muted></app-media-video>
 
@@ -172,20 +172,20 @@ class GraniteQrcodeScanner extends LitElement {
 
           <granite-app-media-periodic-image-capture
               id="imageCapture"
-              .capture="${this.active}"
-              .frequency="${this.frequency}"
-              .fill-light-mode="${this.fillLightMode}"
+              .capture=${this.active}
+              .frequency=${this.frequency}
+              .fill-light-mode=${this.fillLightMode}
               .stream="${this.stream}"
               focus-mode="single-shot"
               image-width="480"
               image-height="480"
-              @last-photo-changed="${this._onLastPhotoChanged}"
-              debug="${this.debug}"></granite-app-media-periodic-image-capture>
+              @last-photo-changed=${this._onLastPhotoChanged}
+              ?debug=${this.debug}></granite-app-media-periodic-image-capture>
 
 
           <granite-qrcode-decoder
-              .blob="${this.photo}" 
-              @qrcode-decoded="${this._onQrcodeDecoded}"></granite-qrcode-decoder>
+              .blob=${this.photo} 
+              @qrcode-decoded=${this._onQrcodeDecoded}></granite-qrcode-decoder>
 
           ${
             this.data ?
