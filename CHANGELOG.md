@@ -2,20 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-## [3.1.0] - 2025-03-18
+## [4.0.0] - 2025-03-18
+
+### Breaking Changes
+- Major version update to reflect significant architectural changes
+- Completely removed dependency on Material Web Components
+- Upgraded to latest granite-qrcode-decoder (v4.0.0)
 
 ### Changed
 - Replaced lit-element with lit 3.2.1
-- Replaced deprecated Material Web Components with custom Granite components
-  - Created custom `granite-icon` component to replace `md-icon`
-  - Created custom `granite-ripple` component to replace `md-ripple`
-  - Created custom `granite-fab` component to replace `md-fab`
-- Removed dependency on external Material components
+- Created custom components to replace Material Web Components
+  - Custom `granite-icon` component with embedded SVG icons
+  - Custom `granite-ripple` component for touch feedback
+  - Custom `granite-fab` component for floating action buttons
+- Removed all external font dependencies (Material Icons)
 - Updated WebComponents polyfill to the latest version (2.8.0)
-- Updated Granite Elements dependencies to their latest versions
-  - @granite-elements/granite-qrcode-decoder to version 3.0.2
+- Added Clever Cloud Components (@clevercloud/components) integration
 
 ### Added
+- SVG-based icon system with embedded icons
 - Modern development server setup with @web/dev-server
 - New test setup using @web/test-runner and @open-wc/testing
 - Added web-dev-server.config.js for better development experience

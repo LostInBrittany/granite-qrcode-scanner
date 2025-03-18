@@ -18,7 +18,7 @@
   "dependencies": {
     "@clevercloud/components": "^18.1.0",
     "@granite-elements/granite-app-media-periodic-image-capture": "^2.0.0",
-    "@granite-elements/granite-qrcode-decoder": "^3.0.2",
+    "@granite-elements/granite-qrcode-decoder": "^4.0.0",
     "lit": "^3.2.1"
   },
   "devDependencies": {
@@ -40,5 +40,5 @@
   "main": "granite-qrcode-scanner.js",
   "module": "granite-qrcode-scanner.js",
   "type": "module",
-  "version": "3.1.0"
+  "version": "4.0.0"
 }
