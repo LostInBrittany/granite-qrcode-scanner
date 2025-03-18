@@ -16,18 +16,29 @@
   "author": "Horacio Gonzalez <horacio.gonzalez@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@clevercloud/components": "^18.1.0",
     "@granite-elements/granite-app-media-periodic-image-capture": "^2.0.0",
-    "@granite-elements/granite-qrcode-decoder": "^2.0.1",
-    "@material/mwc-fab": "^0.3.6",
-    "@material/mwc-ripple": "^0.3.6",
-    "lit-element": "^2.0.0"
+    "@granite-elements/granite-qrcode-decoder": "^3.0.2",
+    "lit": "^3.2.1"
   },
   "devDependencies": {
-    "@polymer/iron-demo-helpers": "^3.1.0",
-    "@webcomponents/webcomponentsjs": "^2.2.7",
-    "wct-browser-legacy": "^1.0.2"
+    "@open-wc/testing": "^3.2.0",
+    "@web/dev-server": "^0.4.1",
+    "@web/test-runner": "^0.18.0",
+    "@web/test-runner-playwright": "^0.11.0",
+    "@webcomponents/webcomponentsjs": "^2.8.0",
+    "chai": "^4.3.10"
+  },
+  "scripts": {
+    "test": "web-test-runner",
+    "test:watch": "web-test-runner --watch",
+    "start": "web-dev-server --app-index demo/index.html --node-resolve --open"
+  },
+  "resolutions": {
+    "marked": "^15.0.7"
   },
   "main": "granite-qrcode-scanner.js",
   "module": "granite-qrcode-scanner.js",
-  "version": "3.0.3"
+  "type": "module",
+  "version": "3.1.0"
 }

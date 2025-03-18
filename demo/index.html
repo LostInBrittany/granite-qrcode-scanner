@@ -6,35 +6,51 @@
 
     <title>granite-qrcode-scanner demo</title>
 
+    <!-- No external font dependencies needed -->
+
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-
-
-    <script type="module">
-      import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
-      import '@polymer/iron-demo-helpers/demo-snippet';
-    </script>
 
     <script type="module" src="../granite-qrcode-scanner.js"></script>
     
-    
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-      </style>
-    </custom-style>
+  <link rel="stylesheet" href="https://components.clever-cloud.com/styles.css">
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .demo-section {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .demo-section h3 {
+        margin-top: 0;
+        color: #333;
+      }
+      .code-example {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+    </style>
   </head>
   <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic granite-qrcode-scanner demo</h3>
-      <demo-snippet>
-        <template>
-          <dom-bind>
-            <template>
-                <granite-qrcode-scanner debug></granite-qrcode-scanner>
-            </template>
-          </dom-bind>
-          
-        </template>
-      </demo-snippet>
+    <h1>Granite QR Code Scanner Demo</h1>
+    
+    <div class="demo-section">
+      <h3>Basic QR Code Scanner</h3>
+      <p>This demo shows the basic functionality of the QR code scanner component.</p>
+      
+      <div class="code-example">
+&lt;granite-qrcode-scanner debug&gt;&lt;/granite-qrcode-scanner&gt;</div>
+      
+      <granite-qrcode-scanner debug></granite-qrcode-scanner>
     </div>
   </body>
 </html>

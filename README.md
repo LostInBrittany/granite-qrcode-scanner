@@ -44,7 +44,13 @@ $ npm i @granite-elements/granite-qrcode-scanner
 
 Once installed, import it in your application:
 
+```js
 import '@granite-elements/granite-qrcode-scanner/granite-qrcode-scanner.js';
+```
+
+### Dependencies
+
+This component has no external dependencies. All icons are included as SVG directly in the component.
 
 
 ## Running demos and tests in browser

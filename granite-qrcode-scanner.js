@@ -8,7 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 import '@granite-elements/granite-qrcode-decoder';
 import '@granite-elements/granite-app-media-periodic-image-capture';
@@ -18,8 +18,11 @@ import '@polymer/app-media/app-media-stream.js';
 import '@polymer/app-media/app-media-video.js';
 import '@polymer/app-media/app-media-image-capture.js';
 
-import '@material/mwc-fab/mwc-fab.js';
-import '@material/mwc-ripple/mwc-ripple.js';
+import "@clevercloud/components/dist/cc-button.js";
+
+import { photoIcon } from './src/utils/icons.js';
+import './src/components/granite-ripple.js';
+
 
 
 class GraniteQrcodeScanner extends LitElement {
@@ -78,6 +81,8 @@ class GraniteQrcodeScanner extends LitElement {
   static get styles() {
     return [
       css`
+
+
         :host {
           display: block;
         }
@@ -113,6 +118,7 @@ class GraniteQrcodeScanner extends LitElement {
           flex-flow: column nowrap;
           align-items: center;
         }
+
       `,
     ];
   }
@@ -126,12 +132,10 @@ class GraniteQrcodeScanner extends LitElement {
 
   render() {
     return html`
-        <div class="media">
-
 
           <app-media-stream
               video-constraints=
-                '{"width": {"ideal": 480}, "height": {"ideal": 480}, "facingMode": { "exact": "${this.facingMode()}"}}'
+                '{"width": {"ideal": 480}, "height": {"ideal": 480}, "facingMode": "${this.facingMode()}"}'
               @active-changed="${this._onActiveChanged}"
               @stream-changed="${this._onStreamChanged}"
               active></app-media-stream>
@@ -147,18 +151,18 @@ class GraniteQrcodeScanner extends LitElement {
 
             <div id="targetSquare"></div>
 
-            <mwc-ripple 
-                id="ripple" 
-                noink>
-            </mwc-ripple>
+            <granite-ripple 
+                id="ripple">
+            </granite-ripple>
 
             ${
               !this.active ?
               html`
               <div id="buttonRow">
-                <mwc-fab 
-                    icon="photo_camera" 
-                    @click="${this._takePhoto}"></mwc-fab>
+              <cc-button
+                primary
+                @cc-button:click=${this._takePhoto}
+                .icon=${photoIcon}>Save</cc-button>
               </div>
               `:
               ``
